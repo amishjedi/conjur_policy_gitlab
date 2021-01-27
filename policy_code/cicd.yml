@@ -1,0 +1,28 @@
+---
+# cicd.yml
+- !group cicdadmin
+- !permit
+  role: !group cicdadmin
+  privileges: [ read, create, update ]
+  resource: !policy root
+
+- !policy
+  id: cicd
+  annotations:
+    description: CICD Hosts
+  body:
+  - !group gitlab
+  - !host
+    id: gitrunner01
+  - !host
+    id: gitrunner02
+  - !host
+    id: gitrunner03
+  - !grant
+    role: !group gitlab
+    member: !host gitrunner01
+
+- !grant
+  role: !group cicdadmin
+  member: !host cicd/gitrunner01
+
